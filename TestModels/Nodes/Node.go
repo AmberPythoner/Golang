@@ -14,7 +14,7 @@ func CreateTree(value int) *Tree {
 }
 
 func (root *Tree) Print() {
-	fmt.Println(root.Value)
+	fmt.Printf("%d  ", root.Value)
 }
 
 func (root *Tree) SetValue(value int) {

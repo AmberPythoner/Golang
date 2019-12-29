@@ -18,3 +18,8 @@ go mod tidy
 go mod init names
 go build ./...
 ```
+
+
+### 知识点
+1、nil是一个 指针类型
+
