@@ -1,15 +1,15 @@
 package queue
 
-type Queue []int
+type Queue []interface{}
 
-func (queue *Queue) Append(value int) {
-	*queue = append(*queue, value)
+func (queue *Queue) Append(value interface{}) {
+	*queue = append(*queue, value.(int))
 }
 
-func (queue *Queue) Pop() int {
+func (queue *Queue) Pop() interface{} {
 	head := (*queue)[0]
 	*queue = (*queue)[1:]
-	return head
+	return head.(int)
 }
 
 func (queue *Queue) Isempty() bool {
