@@ -28,7 +28,8 @@ func sessions(r PostAndGet) {
 	r.Post(url, map[string]string{
 		"names": "ccmuse",
 	})
-	fmt.Println(r.Get(url))
+	r.Get(url)
+	fmt.Println(r)
 }
 
 func main() {
