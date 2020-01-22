@@ -29,3 +29,24 @@ func (root *Tree) Travels() {
 	root.Print()
 	root.Right.Travels()
 }
+
+func (node *Tree) TraverseFunc(f func(tree *Tree)) {
+	if node == nil {
+		return
+	}
+
+	node.Left.TraverseFunc(f)
+	f(node)
+	node.Right.TraverseFunc(f)
+}
+
+func (node *Tree) TraverseWithChannel() chan *Tree {
+	out := make(chan *Tree)
+	go func() {
+		node.TraverseFunc(func(tree *Tree) {
+			out <- tree
+		})
+		close(out)
+	}()
+	return out
+}

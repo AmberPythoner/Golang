@@ -25,3 +25,25 @@ go build ./...
 
 2、import 的时候 加上 包名的 上一级文件名
 3、使用者来定义接口
+
+
+### 性能测试
+1、go test .
+2、go tool cover -html c.out    查看覆盖率
+3、go test -bench .   性能测试
+
+### go rounine
+1、go语言的 协程 是非抢占式多任务处理
+
+### WaitGroup使用
+```cassandraql
+外层函数
+var wg sync.WaitGroup
+
+wg.Add(20)
+
+wg.Wait()
+
+子程序
+wg.Done()
+```

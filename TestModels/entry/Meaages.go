@@ -38,4 +38,14 @@ func main() {
 	//说明 不是重载
 	//var BaseTree *root.Tree
 	//BaseTree = root
+
+	c := root.TraverseWithChannel()
+	maxNodeValue := 0
+	for node := range c {
+		if node.Value > maxNodeValue {
+			maxNodeValue = node.Value
+		}
+	}
+	fmt.Println("Max node value:", maxNodeValue)
+
 }
