@@ -8,6 +8,7 @@ type ConcorrentEngine struct {
 }
 type Scheduler interface {
 	Submit(Request)
+	WorkChan() chan Request
 	WorkerReady(chan Request)
 	Run()
 }
@@ -18,7 +19,7 @@ func (e ConcorrentEngine) Run(seeds ...Request) {
 	e.Scheduler.Run()
 
 	for i := 0; i < e.WorkInt; i++ {
-		createWork(out, e.Scheduler)
+		createWork(e.Scheduler.WorkChan(), out, e.Scheduler)
 	}
 	for _, v := range seeds {
 		// requests channel 里面继续分配新的任务
@@ -36,10 +37,10 @@ func (e ConcorrentEngine) Run(seeds ...Request) {
 	}
 }
 
-func createWork(out chan ParseResult, scheduler Scheduler) {
+func createWork(in chan Request, out chan ParseResult, scheduler Scheduler) {
 	go func() {
 		for {
-			in := make(chan Request)
+			//in := make(chan Request)
 			// 通过 scheduler 里面的select 使得in channel 里面有requests任务就去 执行
 			scheduler.WorkerReady(in)
 			// 拿到任务执行
