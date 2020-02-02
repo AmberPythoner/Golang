@@ -15,16 +15,23 @@ func Run(seeds ...Request) {
 		r := requests[0]
 		requests = requests[1:]
 
-		fmt.Println("Url: ", r.Url)
-		body, err := fetcher.Fetch(r.Url)
+		res, err := worker(r)
 		if err != nil {
-			log.Printf("can not get the body %s", r.Url)
-			continue
+			log.Printf("the worker is error")
 		}
-		res := r.ParseFunc(body)
 		requests = append(requests, res.Requests...)
 		for _, c := range res.Item {
 			fmt.Println(c)
 		}
 	}
+}
+
+func worker(r Request) (ParseResult, error) {
+	fmt.Println("Url: ", r.Url)
+	body, err := fetcher.Fetch(r.Url)
+	if err != nil {
+		log.Printf("can not get the body %s", r.Url)
+		return ParseResult{}, err
+	}
+	return r.ParseFunc(body), nil
 }

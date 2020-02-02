@@ -2,11 +2,16 @@ package main
 
 import (
 	"crawler/engine"
+	"crawler/scheduler"
 	"crawler/zhenai/paser"
 )
 
 func main() {
-	engine.Run(engine.Request{
+	e := engine.ConcorrentEngine{
+		Scheduler: &scheduler.QueueScheduler{},
+		WorkInt:   10,
+	}
+	e.Run(engine.Request{
 		Url:       "https://www.zhenai.com/zhenghun",
 		ParseFunc: paser.ParseCityList,
 	})
