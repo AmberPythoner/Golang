@@ -3,9 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
+	"time"
 )
 
 type TimePoint struct {
@@ -29,16 +31,17 @@ func main() {
 	}
 
 	collection := client.Database("my_db").Collection("col2")
-	type Student struct {
-		Name string
-		Age  int
-	}
 
-	s1 := Student{"小红", 12}
-	insertResult, err := collection.InsertOne(context.TODO(), s1)
+	record := &LogRecord{
+		JobName:   "job10",
+		Command:   "echo hello",
+		Err:       "",
+		Content:   "hello",
+		TimePoint: TimePoint{StartTime: time.Now().Unix(), EndTime: time.Now().Unix() + 10},
+	}
+	insertResult, err := collection.InsertOne(context.TODO(), record)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	fmt.Println(insertResult.InsertedID.(primitive.ObjectID).Hex())
 }
